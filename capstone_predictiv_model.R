@@ -238,58 +238,47 @@ while(n<=nrow(test_3)){
 test_3$correct<-ifelse(test_3$word3==test_3$predict,1,0)
 sum(test_3$correct, na.rm=TRUE)/nrow(test_3)*100
 
-
+#Word predicting function
 
 wordprediction<-function(x) {
   
-    wordlist<-unlist(str_split(x," "))
-    n<-length(wordlist)
-    towwords<-c(wordlist[n-1],wordlist[n])
-    same<-train_3[which(train_3$word1==towwords[1]& train_3$word2==towwords[2]),]
+  wordlist<-unlist(str_split(x," "))
+  n<-length(wordlist)
+  towwords<-c(wordlist[n-1],wordlist[n])
+  same<-train_3[which(train_3$word1==towwords[1]& train_3$word2==towwords[2]),]
   
-if(nrow(same)>0) {
-      
-      sap<-merge(same,d3,by.x="Freq", by.y="r")[-(6:10)]
-      sap<-sap[order(-sap$p),]
-      thirdword<-as.vector(sap[,"word3"])
-      predicting<-vector()
-      
-      for(i in 1:length(thirdword)) {
-        predicting[i] <- paste(x,thirdword[i])
-      }
-      print("top five  3- words contruction soreted by probability")
-      return(thirdword[1])
-      
-                  }
-      
-  else {
-      
-       singleword<-wordlist[n]
-       same2<-train_2[which(train_2$word1==singleword),]
-       
-          if(nrow(same2)>0) {
-         
-            sap<-merge(same2,d2,by.x="Freq", by.y="r")[-(5:8)]
-            sap<-sap[order(-sap$p),]
-            secondword<-as.vector(sap[,"word2"])
-            predicting<-vector()
-         
-              for(i in 1:length(secondword)) {
-                  
-                        predicting[i] <- paste(singleword,secondword[i])
-                                             }
-            print("there is mach in 2-gram")
-            print(predicting)
-            return(secondword[1])
-         
-                            }
+  if(nrow(same)>0) {
+    
+    sap<-merge(same,d3,by.x="Freq", by.y="r")[-(6:10)]
+    sap<-sap[order(-sap$p),]
+    thirdword<-as.vector(sap[,"word3"])
+    
+    return(thirdword[1])
+    
+    
+  }
   
-         else {
-            wordfreq<-train_1[order(-train_1$Freq),]
-            singlew<-as.vector(wordfreq[,"Var1"])
-            return(singlew[1])
-              }
-          
+  
+  
+  singleword<-wordlist[n]
+  same2<-train_2[which(train_2$word1==singleword),]
+  
+  if(nrow(same2)>0) {
+    
+    sap<-merge(same2,d2,by.x="Freq", by.y="r")[-(5:8)]
+    sap<-sap[order(-sap$p),]
+    secondword<-as.vector(sap[,"word2"])
+    return(secondword[1])
+    
+  }
+  
+  wordfreq<-train_1[order(-train_1$Freq),]
+  singlew<-as.vector(wordfreq[,"Var1"])
+  # I could potentially return the most frequent single word, but probability to match is extremely low, so  will return NULL
+  if(x=="") {
+    return(NULL)}
+  else { 
+    return("Don't know, sorry")
   }
 }
 
