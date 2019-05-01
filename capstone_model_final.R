@@ -15,7 +15,7 @@
  setwd(pathname)
  
  files<-list.files() # List of filies to be analyzed 
- linestoread <- 5000
+ linestoread <- 3000
 
   read_line<-function(x) {
    s<-readLines(x,warn=F,n=linestoread,encoding = "UTF-8")
@@ -196,28 +196,32 @@ if(nrow(same)>0) {
 
                   }
       
-  else {
+  
       
        singleword<-wordlist[n]
        same2<-train_2[which(train_2$word1==singleword),]
        
-          if(nrow(same2)>0) {
+      if(nrow(same2)>0) {
          
             sap<-merge(same2,d2,by.x="Freq", by.y="r")[-(5:8)]
             sap<-sap[order(-sap$p),]
             secondword<-as.vector(sap[,"word2"])
             return(secondword[1])
          
-                            }
+          }
   
-         else {
-            wordfreq<-train_1[order(-train_1$Freq),]
-            singlew<-as.vector(wordfreq[,"Var1"])
-            return(singlew[1])
-              }
+        wordfreq<-train_1[order(-train_1$Freq),]
+        singlew<-as.vector(wordfreq[,"Var1"])
+        # I could potentially return the most frequent single word, but probability to match is extremely low, so  will return NULL
+        if(x=="") {
+          return(NULL)}
+        else { 
+        return("Don't know, sorry")
+        }
+      }
           
-  }
-}
+  
+
 
 
   
