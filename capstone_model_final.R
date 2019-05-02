@@ -1,4 +1,3 @@
-
 #The goal of the second week assignment of the  Coursera Data Scienence Capstone  project  is to build a simple model for the 
 #relationship between words,as a predictive text mining application. We will explore simple  n-gram models,
 #for predicting the next word based on the previous one and two words.
@@ -6,63 +5,17 @@
 
 
 # Initalization
-
- lbs<-c("tm", "class","plyr","wordcloud","RWeka","stringr","caret")
- lapply(lbs, require,character.only=TRUE)
- 
- pathname<-"C:/Users/kkolaro/Desktop/Private/ucenje/Coursera/Data products/week4project/Capstone/capstone"
- 
- setwd(pathname)
- 
- files<-list.files() # List of filies to be analyzed 
- linestoread <- 3000
-
-  read_line<-function(x) {
-   s<-readLines(x,warn=F,n=linestoread,encoding = "UTF-8")
-   
- }
-
- samplefctr<-1
-
- 
- enblogs <- read_line(files[1])
- enblogs <- sample(enblogs, size=length(enblogs)*samplefctr, replace=FALSE)
- 
- ennews <- read_line(files[2])
- ennews <- sample(ennews, size=length(ennews)*samplefctr, replace=FALSE)
- 
- entwitter <- read_line(files[3])
- entwitter <- sample(entwitter, size=length(entwitter)*samplefctr, replace=FALSE)
- 
- en_all <- c(enblogs,ennews,entwitter)
- train<-sample(en_all, size=length(en_all), replace=FALSE)
- 
- 
-
- train <- gsub("[^[:alnum:][:blank:]]", "", train)
- train<-gsub(" *\\b[[:alpha:]]{1}\\b *", " ", train) # removing single letters
- train <- gsub("ø", "", train)
- 
- 
-# Cleaning text and Corpus creation 
- 
- corpus_train<-Corpus(VectorSource(train)) #Creating Corpus - collection of documents 
-
-# Text(corpus) cleaning 
- 
-corpuscleaning<-function(corp){
-   
-   corp<-tm_map(corp,content_transformer(tolower))
-   corp<-tm_map(corp,removeNumbers)
-   corp<-tm_map(corp,stripWhitespace)
-   corp<-tm_map(corp,removeWords,stopwords("english"))
-   return(corp)
-}
+start_time <- Sys.time()
 
 
-corpus_train<-corpuscleaning(corpus_train) # Corpus- after the "cleaning"
-corpus_train<-sapply(corpus_train,as.character)# Corpus to character
-train_df <- data.frame(corpus_train,stringsAsFactors = FALSE) # Creating data frame
+library(RWeka)
+library(tm)
+library(class)
+library(plyr)
+library(stringr)
+library(caret)
+
+train_df<- readRDS(file="train_df.rda")
 
 # n-grams
 
@@ -220,7 +173,19 @@ if(nrow(same)>0) {
         }
       }
           
+end_time <- Sys.time()
+print(end_time-start_time)
+
+
+ready <- function( ){
+  if(end_time>0) {
+  return("SART NOW!")
+}
+return("")
+}
   
+  
+ 
 
 
 
