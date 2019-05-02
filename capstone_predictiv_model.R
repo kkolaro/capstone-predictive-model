@@ -6,6 +6,9 @@
 
 
 # Initalization
+
+ start_time<-Sys.time()
+
  lbs<-c("tm", "class","plyr","wordcloud","RWeka","stringr","caret")
  lapply(lbs, require,character.only=TRUE)
  
@@ -17,7 +20,7 @@
  files<-list.files() # List of filies to be analyzed 
  
  
- linestoread <- 10000
+ linestoread <- 1000
 
  
  read_line<-function(x) {
@@ -25,7 +28,7 @@
    
  }
 
- samplefctr<-1
+ samplefctr<-.8
 
  
  enblogs <- read_line(files[1])
@@ -38,7 +41,7 @@
  entwitter <- sample(entwitter, size=length(entwitter)*samplefctr, replace=FALSE)
  
  
- #quiz<-read_line(files[4])
+ 
  
  en_all <- c(enblogs,ennews,entwitter)
  en_all<-sample(en_all, size=length(en_all), replace=FALSE)
@@ -73,7 +76,6 @@ corpuscleaning<-function(corp){
    corp<-tm_map(corp,content_transformer(tolower))
    corp<-tm_map(corp,removeNumbers)
    corp<-tm_map(corp,stripWhitespace)
-   corp<-tm_map(corp,tolower)
    corp<-tm_map(corp,removeWords,stopwords("english"))
    return(corp)
 }
@@ -283,6 +285,7 @@ wordprediction<-function(x) {
 }
 
 
-  
+end_time <- Sys.time()
+print(end_time-start_time)
 
 
