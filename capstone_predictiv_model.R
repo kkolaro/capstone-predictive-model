@@ -20,7 +20,7 @@
  files<-list.files() # List of filies to be analyzed 
  
  
- linestoread <- 1000
+ linestoread <- 16000
 
  
  read_line<-function(x) {
